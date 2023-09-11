@@ -48,3 +48,9 @@ class LoginView(APIView):
 
 
         return Response({'message':"user login" , 'token':str(token)})
+    
+class UserListView(APIView):
+    def get(self,request):
+            users=User.objects.all()
+            phone_number=[user.username for user in users]
+            return Response({'phone_numbers': phone_number})
