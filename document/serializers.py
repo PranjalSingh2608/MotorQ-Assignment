@@ -19,3 +19,8 @@ class DocumentCreationSerializer(serializers.Serializer):
             invalid_users = set(value) - set(users.values_list('username', flat=True))
             raise serializers.ValidationError(f"Invalid users: {', '.join(invalid_users)}")
         return users
+    
+class DocumentContentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Document
+        fields = ['unique_id', 'name','content']

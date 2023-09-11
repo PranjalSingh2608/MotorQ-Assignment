@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from  rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 from .models import Document
-from .serializers import DocumentSerializer, DocumentCreationSerializer
+from .serializers import DocumentSerializer, DocumentCreationSerializer,DocumentContentSerializer
 
 class DocumentListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -80,3 +80,16 @@ class SharedDocumentsListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Document.objects.filter(shared_with=self.request.user)
+    
+
+class ViewDocument(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def get(self, request, unique_id):
+        document = get_object_or_404(Document, unique_id=unique_id)
+        if request.user == document.owner or request.user in document.shared_with.all():
+            serializer = DocumentContentSerializer(document)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'You do not have access to this document.'}, status=status.HTTP_403_FORBIDDEN)
