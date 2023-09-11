@@ -2,11 +2,16 @@ from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
 from  rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 from .models import Document
 from .serializers import DocumentSerializer, DocumentCreationSerializer,DocumentContentSerializer
+
+@swagger_auto_schema(
+    method='post',
+)
 
 class DocumentListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]

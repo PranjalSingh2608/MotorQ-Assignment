@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-a4d8xf8va4azng5ua$p4h^b8deoat5uum0fn=1j2gdudknv_k4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','assignment-fbe3.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1','assignment-fbe3.onrender.com','assignment-fbe3.onrender.com/docs']
 
 
 # Application definition
@@ -129,5 +129,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'mysite.api.urls.swagger_info', 
+    'SECURITY_DEFINITIONS': {
+        'basic': {'type': 'apiKey'},
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+}
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
